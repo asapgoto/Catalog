@@ -1,0 +1,22 @@
+{
+  "name": "germain",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.js",
+    "test": "todo"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "bootstrap": "^4.1.1",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "mongodb": "^3.1.6",
+    "mongoose": "^5.0.17",
+    "npm": "^6.4.1",
+    "nunjucks": "^3.1.2"
+  }
+}

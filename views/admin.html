@@ -1,0 +1,319 @@
+<!doctype html>
+<html>
+<head>
+  <base href="/">
+  <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="css/style.css" rel="stylesheet" type="text/css">
+  <title>Sustaisanbility Patterns Catalog</title>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="jumbotron text-center">
+    <h1>Administration</h1>
+    <p>Add a pattern</p>
+  </div>
+
+  <!-- LEFT NAV -->
+  <div class="sidenav">
+    <a href="/">Home</a>
+    <a href="/howto">How to</a>
+    <a href="/list">List of Patterns</a>
+    <a href="/admin">Admin</a>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+
+    <div class="panel panel-default">
+     <div class="panel-body">
+      <form method="post" action="/admin" class="bolding">
+        <div class="form-group">
+          <label>Name</label>
+          <input required type="text" name="name" id="name" class="form-control">
+        </div>
+        
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="counttimescope" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="timescope1">TimeScope</label>
+              <div id="field">
+                <input required class="input form-control multinput" id="timescope1" name="timescope" type="text" data-items="8"/>
+                <button id="b1" class="btn add-more-timescope multibtn" type="button">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Repeat</label>
+          <input required type="text" name="repeat" id="repeat" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label>Level of Confidence</label>
+          <input required type="text" name="levelofconfidence" id="levelofconfidence" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="countoutcomes" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="outcomes">Outcomes</label>
+              <div class="controls" id="profs"> 
+                <div id="field">
+                  <input required class="input form-control multinput" id="outcomes1" name="outcomes" type="text" data-items="8"/>
+                  <button id="b1" class="btn add-more-outcomes multibtn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="countmetrics" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="metrics">Metrics</label>
+              <div class="controls" id="profs"> 
+                <div id="field">
+                  <input required class="input form-control multinput" id="metrics1" name="metrics" type="text" data-items="8"/>
+                  <button id="b1" class="btn add-more-metrics multibtn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <input required type="text" name="description" id="description" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="countexamples" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="examples">Examples</label>
+              <div class="controls" id="profs"> 
+                <div id="field">
+                  <input required class="input form-control multinput" id="examples1" name="examples" type="text" data-items="8"/>
+                  <button id="b1" class="btn add-more-examples multibtn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Impacts</label>
+          <select required class="form-control" id="impacts" name="impacts">
+            {% for c in category %}
+            <option name="{{c.name}}" value="{{c.name}}">{{c.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="countproblematics" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="problematics">Problematics</label>
+              <div class="controls" id="profs"> 
+                <div id="field">
+                  <input required class="input form-control multinput" id="problematics1" name="problematics" type="text" data-items="8"/>
+                  <button id="b1" class="btn add-more-problematics multibtn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <input type="hidden" name="countadditionalcomponents" value="1" />
+            <div class="control-group" id="fields">
+              <label class="control-label" for="additionalcomponents">Additional Components</label>
+              <div class="controls" id="profs"> 
+                <div id="field">
+                  <input class="input form-control multinput add-compo" id="additionalcomponents1" name="additionalcomponents" type="text"/>
+                  <input class="input form-control multinput add-percent" id="additionalpercent1" name="additionalpercent" type="text" placeholder="%">
+                  <button id="b1" class="btn add-more-additionalcomponents multibtn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <input type="submit" value="Add Pattern" >
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/jquery/jquery.js"></script>
+<script>
+  $( document ).ready(function() {
+    var nexttimescope = 1;
+    var nextoutcomes = 1;
+    var nextmetrics = 1;
+    var nextproblematics = 1;
+    var nextadditionalcomponents = 1;
+    var nextexamples=1;
+
+    $(".add-more-timescope").click(function(e){
+      e.preventDefault();
+      var addto = "#timescope" + nexttimescope;
+      var addRemove = "#timescope" + (nexttimescope);
+      nexttimescope = nexttimescope + 1;
+      var newIn = '<input required autocomplete="off" class="input form-control multinput" id="timescope' + nexttimescope + '" name="timescope" type="text">';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nexttimescope - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="timescope">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#timescope" + nexttimescope).attr('data-source',$(addto).attr('data-source'));
+      $("#counttimescope").val(nexttimescope);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var timescopeNum = this.id.charAt(this.id.length-1);
+        var timescopeID = "#timescope" + timescopeNum;
+        $(this).remove();
+        $(timescopeID).remove();
+      });
+    });
+
+    $(".add-more-outcomes").click(function(e){
+      e.preventDefault();
+      var addto = "#outcomes" + nextoutcomes;
+      var addRemove = "#outcomes" + (nextoutcomes);
+      nextoutcomes = nextoutcomes + 1;
+      var newIn = '<input required autocomplete="off" class="input form-control multinput" id="outcomes' + nextoutcomes + '" name="outcomes" type="text">';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nextoutcomes - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="outcomes">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#outcomes" + nextoutcomes).attr('data-source',$(addto).attr('data-source'));
+      $("#countoutcomes").val(nextoutcomes);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var outcomesNum = this.id.charAt(this.id.length-1);
+        var outcomesID = "#outcomes" + outcomesNum;
+        $(this).remove();
+        $(outcomesID).remove();
+      });
+    });
+
+    $(".add-more-metrics").click(function(e){      
+      e.preventDefault();
+      var addto = "#metrics" + nextmetrics;
+      var addRemove = "#metrics" + (nextmetrics);
+      nextmetrics = nextmetrics + 1;
+      var newIn = '<input required autocomplete="off" class="input form-control multinput" id="metrics' + nextmetrics + '" name="metrics" type="text">';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nextmetrics - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="metrics">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#metrics" + nextmetrics).attr('data-source',$(addto).attr('data-source'));
+      $("#countmetrics").val(nextmetrics);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var metricsNum = this.id.charAt(this.id.length-1);
+        var metricsID = "#metrics" + metricsNum;
+        $(this).remove();
+        $(metricsID).remove();
+      });
+    });
+
+ $(".add-more-examples").click(function(e){      
+      e.preventDefault();
+      var addto = "#examples" + nextexamples;
+      var addRemove = "#mexamples" + (nextexamples);
+      nextexamples = nextexamples + 1;
+      var newIn = '<input required autocomplete="off" class="input form-control multinput" id="examples' + nextexamples + '" name="examples" type="text">';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nextexamples - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="examples">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#examples" + nextexamples).attr('data-source',$(addto).attr('data-source'));
+      $("#countexamples").val(nextexamples);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var examplesNum = this.id.charAt(this.id.length-1);
+        var examplesID = "#examples" + examplesNum;
+        $(this).remove();
+        $(examplesID).remove();
+      });
+    });
+
+    $(".add-more-problematics").click(function(e){      
+      e.preventDefault();
+      var addto = "#problematics" + nextproblematics;
+      var addRemove = "#problematics" + (nextproblematics);
+      nextproblematics = nextproblematics + 1;
+      var newIn = '<input required autocomplete="off" class="input form-control multinput" id="problematics' + nextproblematics + '" name="problematics" type="text">';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nextproblematics - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="problematics">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#problematics" + nextproblematics).attr('data-source',$(addto).attr('data-source'));
+      $("#countproblematics").val(nextproblematics);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var problematicsNum = this.id.charAt(this.id.length-1);
+        var problematicsID = "#problematics" + problematicsNum;
+        $(this).remove();
+        $(problematicsID).remove();
+      });
+    });
+
+    $(".add-more-additionalcomponents").click(function(e){      
+      e.preventDefault();
+      var addto = "#additionalpercent" + nextadditionalcomponents;
+      var addRemove = "#additionalpercent" + (nextadditionalcomponents);
+      nextadditionalcomponents = nextadditionalcomponents + 1;
+      var newIn = '<input class="input form-control multinput add-compo" id="additionalcomponents' + nextadditionalcomponents + '" name="additionalcomponents" type="text"><input class="input form-control multinput add-percent" id="additionalpercent' + nextadditionalcomponents + '" name="additionalpercent" type="text" placeholder="%" style="margin-left:4px;"> ';
+      var newInput = $(newIn);
+      var removeBtn = '<button id="remove' + (nextadditionalcomponents - 1) + '" class="btn btn-danger remove-me multibtn" >-</button></div><div id="additionalcomponents">';
+      var removeButton = $(removeBtn);
+      $(addto).after(newInput);
+      $(addRemove).after(removeButton);
+      $("#additionalcomponents" + nextadditionalcomponents).attr('data-source',$(addto).attr('data-source'));
+      $("#countadditionalcomponents").val(nextadditionalcomponents);  
+
+      $('.remove-me').click(function(e){
+        e.preventDefault();
+        var additionalcomponentsNum = this.id.charAt(this.id.length-1);
+        var additionalcomponentsID = "#additionalcomponents" + additionalcomponentsNum;
+        $(this).remove();
+        $(additionalcomponentsID).remove();
+
+        var additionalcomponentsNum = this.id.charAt(this.id.length-1);
+        var additionalcomponentsID = "#additionalpercent" + additionalcomponentsNum;
+        $(this).remove();
+        $(additionalcomponentsID).remove();
+      });
+    });
+
+    $(".add-compo").on('input', function(){
+      console.log("oui");
+    });
+
+
+
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+  <head>
+    <base href="/">
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <title>Sustaisanbility Patterns Catalog</title>
+  </head>
+  <body>
+
+    <!-- HEADER -->
+    <div class="jumbotron text-center">
+      <h1>List of Patterns</h1>
+      <p></p>
+    </div>
+
+    <!-- LEFT NAV -->
+    <div class="sidenav">
+      <a href="/
+      ">Home</a>
+      <a href="/howto">How to</a>
+      <a href="/list">List of Patterns</a>
+      <a href="/admin">Admin</a>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <h2>Filter by Category</h2>
+      {% for c in category %}
+        <div class="form-check form-check-inline">
+          <input class="form-check-input box pointer" checked type="checkbox" id="{{c.name}}" value="{{c.name | replace(' ', '_')}}">
+          <label class="form-check-label pointer" for="{{c.name}}">{{c.name}}</label>
+        </div>
+        {% endfor %}
+        
+        
+      {% for p in pattern %}
+          <div class="panel panel-default {{p.impacts | replace(' ', '_')}}">
+            <div class="panel-heading {{p.impacts | replace(' ', '_')}}_style"><h1 class="d-inline">{{p.name}}  ( {{p.levelofconfidence}} /10)</h1>
+              <div id={{p._id}} class="float-right d-inline panel panel-default plus" onclick="showBlock(this)">+</div>
+              <a href="/sources/patterns/{{p.name | replace(' ', '') | replace (':', '') | replace ('/', '')}}.pdf" target="_blank"><img class="imgPdf" src="http://www.sertsan.net/Theme/images/pdf-icon.png" height="42" width="42"></a>
+            </div>
+            <div class="panel-body azerty">
+
+              <h3>TimeScope</h3>
+              <div>{% for a in p.timescope %} {{a}}<br/> {% endfor %}</div>
+
+              <h3>Repeatability</h3>
+              <div>{{p.repeat}} %</div>
+
+              <h3>Impacts</h3>
+              <div>{{p.impacts}}</div>
+
+              <div class="{{p._id}} notyet">
+              {% if p.additional_components|length > 1 %}
+              
+              <h3>Additional Components</h3>
+              <div>{% for a in p.additional_components %} {{a}} ({{p.addition_percentage[(loop.index) -1]}}%)<br/> {% endfor %}</div>
+
+              {% endif %}
+              </div>
+            
+              <h3>Outcomes</h3>
+              <div>{% for a in p.outcomes %} {{a}}<br/> {% endfor %}</div>
+            
+              <div class="{{p._id}} notyet">
+              <h3>Metrics</h3>
+              <div>{% for a in p.metrics %} {{a}}<br/> {% endfor %}</div>
+            </div>
+            <div class="{{p._id}} notyet">
+                <h3>Description</h3>
+                <div>{{p.description}}</div>
+            </div>
+            <div class="{{p._id}} notyet">
+              <h3>Examples</h3>
+              <div>{{p.examples}}</div>
+            </div>
+              <h3>Problems</h3>
+              <div>{% for a in p.problematics %} {{a}}<br/> {% endfor %}</div>
+            </div>
+
+          </div>
+         
+   
+
+      {% endfor %}
+    </div>
+
+  
+  <script src="/jquery/jquery.js"></script>
+  <script>
+    console.log(window.location.pathname);
+    $(".notyet").toggle();
+    function showBlock(element){
+      var id =$(element).attr('id');
+      console.log(id);
+      $("."+id).slideToggle(400);
+    }
+
+    $(".box").change(function() {
+        if(this.checked) {
+            $("."+this.value).slideToggle(400);
+        } else {
+          $("."+this.value).slideToggle(400);
+        }
+    });
+  </script>
+  </body>
+</html>
